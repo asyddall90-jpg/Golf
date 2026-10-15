@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spain Golf Trip 2026</title>
+<meta name="theme-color" content="#1d5c3b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+/* Layout: a hand-operated clubhouse scoreboard — slotted white panels on a fairway ground, one column, fixed bottom tab bar for one-thumb use on the course */
+:root{
+  --bg:#e7ede4; --board:#fbfcf9; --ink:#14231a; --muted:#5b6b61; --line:#d2dbcf;
+  --green:#1d5c3b; --on-green:#ffffff;
+  --a:#1f45a6; --a-soft:#e2e8f8; --b:#b3241c; --b-soft:#f8e2df;
+  --gold:#9a6d06; --warn-bg:#fff3d1; --warn:#6f4f00;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1510; --board:#16211a; --ink:#e3ece5; --muted:#9aab9f; --line:#2a3a30;
+  --green:#5cbf85; --on-green:#07130c;
+  --a:#8aa7ff; --a-soft:#1a2547; --b:#ff8579; --b-soft:#3c1916;
+  --gold:#e3b54b; --warn-bg:#382c0b; --warn:#f2cf73; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1510; --board:#16211a; --ink:#e3ece5; --muted:#9aab9f; --line:#2a3a30;
+  --green:#5cbf85; --on-green:#07130c;
+  --a:#8aa7ff; --a-soft:#1a2547; --b:#ff8579; --b-soft:#3c1916;
+  --gold:#e3b54b; --warn-bg:#382c0b; --warn:#f2cf73; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 calc(84px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:720px;margin:0 auto}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:.01em;text-wrap:balance;margin:0;line-height:1}
+h2{font-size:26px;text-transform:uppercase}
+h3{font-size:20px;text-transform:uppercase}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* header */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-block:18px 14px}
+.top h1{font-size:34px;text-transform:uppercase}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.live.on i{background:#2fb36b;box-shadow:0 0 0 3px color-mix(in srgb,#2fb36b 25%,transparent)}
+.raised{text-align:right}
+.raised b{display:block;font-family:var(--display);font-size:28px;color:var(--gold);line-height:1}
+
+.panel{background:var(--board);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:12px}
+.stack{display:grid;gap:16px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.banner{background:var(--warn-bg);color:var(--warn);border-radius:6px;padding:10px 12px;font-size:14px}
+
+/* hero scoreboard */
+.hero{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;background:var(--board);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.hero .team{padding:14px 12px;display:grid;gap:2px;align-content:start}
+.hero .team.a{border-top:6px solid var(--a)} .hero .team.b{border-top:6px solid var(--b);text-align:right}
+.tname{font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em}
+.team.a .tname{color:var(--a)} .team.b .tname{color:var(--b)}
+.pts{font-family:var(--display);font-size:72px;font-weight:900;line-height:.9}
+.proj{font-size:12px;color:var(--muted);min-height:18px}
+.hero .mid{display:grid;align-content:center;justify-items:center;gap:4px;padding:8px;border-inline:1px solid var(--line);font-size:12px;color:var(--muted);text-align:center;min-width:86px}
+.hero .mid b{font-family:var(--display);font-size:22px;color:var(--ink)}
+.track{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--line)}
+.track span{display:block}
+.track .ca{background:var(--a)} .track .pa{background:color-mix(in srgb,var(--a) 40%,transparent)}
+.track .cb{background:var(--b)} .track .pb{background:color-mix(in srgb,var(--b) 40%,transparent)}
+.track .open{flex:1}
+
+/* match rows */
+.rhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.mlist{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;width:100%;text-align:left;background:transparent;border:1px solid var(--line);border-radius:6px;padding:10px}
+.mrow:hover{border-color:var(--muted)}
+.mrow .side{font-weight:600;font-size:14px;min-width:0;overflow-wrap:anywhere}
+.mrow .side.a{color:var(--a)} .mrow .side.b{color:var(--b);text-align:right}
+.pill{display:grid;justify-items:center;min-width:78px;padding:4px 8px;border-radius:4px;background:var(--bg);font-family:var(--display);font-size:20px;font-weight:800;line-height:1.05}
+.pill small{font-family:var(--body);font-size:11px;font-weight:600;opacity:.85}
+.pill.A{background:var(--a);color:var(--board)} .pill.B{background:var(--b);color:var(--board)}
+.pill.H{background:var(--ink);color:var(--board)}
+
+/* scorecard */
+.back{background:none;border:none;padding:0;color:var(--green);font-weight:700}
+.status{border-radius:6px;padding:12px;text-align:center;font-family:var(--display);font-size:30px;font-weight:900;text-transform:uppercase;background:var(--bg)}
+.status.A{background:var(--a);color:var(--board)} .status.B{background:var(--b);color:var(--board)}
+.status small{display:block;font-family:var(--body);font-size:12px;font-weight:600;text-transform:none;letter-spacing:0;opacity:.9}
+.holes{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+.holes button{aspect-ratio:1;max-width:100%;border:1px solid var(--line);background:var(--board);border-radius:4px;font-weight:700;font-size:14px;padding:0}
+.holes button.A{background:var(--a-soft);border-color:var(--a);color:var(--a)}
+.holes button.B{background:var(--b-soft);border-color:var(--b);color:var(--b)}
+.holes button.H{background:var(--bg);border-color:var(--muted)}
+.holes button.dead{opacity:.35}
+.holes button[aria-current="true"]{outline:3px solid var(--ink);outline-offset:1px}
+.hinfo{display:flex;justify-content:space-between;align-items:baseline}
+.hinfo h3{font-size:34px}
+.prow{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.prow .pn{font-weight:700;min-width:0}
+.prow.a .pn{color:var(--a)} .prow.b .pn{color:var(--b)}
+.prow .pn small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.dots{color:var(--gold);letter-spacing:2px;font-size:12px}
+.ctrl{display:flex;gap:6px;align-items:center}
+.step{width:46px;height:46px;border-radius:6px;border:1px solid var(--line);background:var(--bg);font-size:24px;font-weight:700;line-height:1}
+.val{width:58px;height:46px;border-radius:6px;border:2px solid var(--ink);background:var(--board);font-family:var(--display);font-size:28px;font-weight:900}
+.val.empty{border-style:dashed;color:var(--muted);font-size:18px}
+.pu{height:46px;padding:0 10px;border-radius:6px;border:1px solid var(--line);background:none;font-size:12px;font-weight:700}
+.pu[aria-pressed="true"]{background:var(--ink);color:var(--board)}
+.hres{text-align:center;font-weight:700}
+.hnav{display:flex;gap:8px}
+.hnav button{flex:1}
+.btn{border:1px solid var(--line);background:var(--board);border-radius:6px;padding:10px 14px;font-weight:700}
+.btn.primary{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.card{border-collapse:collapse;font-size:12px;min-width:640px;width:100%}
+table.card th,table.card td{border:1px solid var(--line);padding:4px 3px;text-align:center}
+table.card th:first-child,table.card td:first-child{text-align:left;white-space:nowrap;padding-inline:6px;position:sticky;left:0;background:var(--board)}
+table.card td.A{background:var(--a-soft);color:var(--a);font-weight:700}
+table.card td.B{background:var(--b-soft);color:var(--b);font-weight:700}
+table.card sup{color:var(--gold)}
+.rtabs{display:flex;gap:6px;flex-wrap:wrap}
+.rtabs button{border:1px solid var(--line);background:var(--board);border-radius:999px;padding:6px 12px;font-weight:600;font-size:13px}
+.rtabs button[aria-pressed="true"]{background:var(--ink);color:var(--board);border-color:var(--ink)}
+
+/* fines */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--board);border-radius:999px;padding:7px 12px;font-weight:600;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.chip.ta{box-shadow:inset 3px 0 0 var(--a)} .chip.tb{box-shadow:inset 3px 0 0 var(--b)}
+input[type=search],input[type=text],input[type=number],select{border:1px solid var(--line);background:var(--board);border-radius:6px;padding:9px 10px;min-width:0;width:100%}
+.flist{display:grid;gap:4px;max-height:340px;overflow-y:auto;border:1px solid var(--line);border-radius:6px;padding:4px}
+.fitem{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;text-align:left;border:none;background:none;border-radius:4px;padding:8px}
+.fitem:hover{background:var(--bg)}
+.fitem[aria-pressed="true"]{background:var(--green);color:var(--on-green)}
+.fitem b{font-family:var(--display);font-size:20px}
+.fcat{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 8px 2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row > *{flex:1 1 140px}
+.feed{display:grid;gap:0}
+.feed .fe{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:9px 0;border-top:1px solid var(--line)}
+.feed .fe:first-child{border-top:none}
+.fe .amt{font-family:var(--display);font-size:22px;font-weight:800;color:var(--gold);text-align:right}
+.fe .meta{font-size:12px;color:var(--muted);grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.link{background:none;border:none;padding:0;color:var(--b);font-weight:700;font-size:12px}
+.shame{display:grid;gap:6px}
+.shame .sr{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center}
+.shame .barw{grid-column:2/3;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.shame .barw span{display:block;height:100%;background:var(--gold)}
+.rule{font-size:12px;color:var(--muted);font-style:italic}
+
+/* tables */
+table.ledger{border-collapse:collapse;width:100%;min-width:640px;font-size:13px}
+table.ledger th,table.ledger td{padding:6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.ledger th:first-child,table.ledger td:first-child{text-align:left}
+table.ledger tfoot td{font-weight:800;border-top:2px solid var(--ink)}
+table.ledger input{width:80px;padding:5px 6px;text-align:right}
+.owed{color:var(--b);font-weight:700}
+
+/* setup */
+.grid18{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+.grid18 label{display:grid;gap:2px;font-size:11px;color:var(--muted);text-align:center}
+.grid18 input{padding:6px 2px;text-align:center}
+.prs{display:grid;gap:6px}
+.prs .pr{display:grid;grid-template-columns:1fr 130px 64px 36px;gap:6px}
+.match-ed{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center}
+.match-ed .vs{font-weight:700;color:var(--muted)}
+.match-ed .col{display:grid;gap:4px}
+.fed{display:grid;grid-template-columns:1fr 70px 110px 32px;gap:6px}
+
+/* tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--board);border-top:1px solid var(--line);
+  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.tabbar .in{max-width:720px;margin:0 auto;display:flex;gap:4px}
+.tabbar button{flex:1;border:none;background:none;padding:8px 2px;border-radius:6px;font-size:12px;font-weight:700;display:grid;justify-items:center;gap:2px;color:var(--muted)}
+.tabbar button svg{width:22px;height:22px}
+.tabbar button[aria-current="page"]{color:var(--green);background:var(--bg)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:6;background:var(--ink);color:var(--board);border-radius:6px;padding:10px 14px;font-weight:600;display:flex;gap:14px;align-items:center;max-width:calc(100% - 32px)}
+#toast button{background:none;border:none;color:var(--gold);font-weight:800}
+@media (max-width:420px){.pts{font-size:58px}.hero .mid{min-width:70px}.prs .pr{grid-template-columns:1fr 104px 56px 32px}}
+@media (prefers-reduced-motion:no-preference){.track span{transition:width .4s}}
+</style>
+</head><body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="live" id="live"><i></i><span>Connecting…</span></div>
+      <div class="small muted" id="me"></div>
+      <h1 id="evName">Spain Golf Trip 2026</h1>
+    </div>
+    <div class="raised"><span class="eyebrow">Raised for charity</span><b class="num" id="raised">£0</b></div>
+  </header>
+  <main id="app"><div class="panel"><p class="muted">Loading the scoreboard…</p></div></main>
+</div>
+
+<nav class="tabbar" aria-label="Sections"><div class="in">
+  <button data-tab="board"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Scores</button>
+  <button data-tab="cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V3l12 5-12 5"/></svg>My card</button>
+  <button data-tab="fines"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 8.5a3 3 0 0 0-5 2V16h6M8 13h5"/></svg>Fines</button>
+  <button data-tab="money"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Money</button>
+  <button data-tab="setup" id="setupTab" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>Setup</button>
+</div></nav>
+<div id="toast" hidden></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ======== FIREBASE CONFIG ======== */
+const FIREBASE_CONFIG = {"apiKey": "AIzaSyDU8kOIfEwy5YWhrWG3VXEjYN64AxrCJ4g", "authDomain": "spain-golf-2026-27e36.firebaseapp.com", "projectId": "spain-golf-2026-27e36", "storageBucket": "spain-golf-2026-27e36.firebasestorage.app", "messagingSenderId": "441450716081", "appId": "1:441450716081:web:0db8e4ee7a70fafd6a7b90"};
+/* Organiser PIN unlocks Setup and the Money table on a phone. */
+const ORGANISER_PIN = "5950";
+const SEED_CONFIG = {"adjTable": [-3, -2, -1, 0, 0, 0, 0, 0, 0, 1, 2, 3], "adjust": {}, "eventName": "Spain Golf Trip 2026", "finesMaster": "Trevor Wragg", "indivAllowance": 100, "people": [{"hcp": 12, "name": "Darryl Wright", "side": "A"}, {"hcp": 28, "name": "Jamie Woolands", "side": "A"}, {"hcp": 8, "name": "Ian Syddall", "side": "A"}, {"hcp": 20, "name": "Alex Fletcher", "side": "A"}, {"hcp": 30, "name": "Paul Flanagan", "side": "A"}, {"hcp": 20, "name": "Trevor Wragg", "side": "A"}, {"hcp": 16, "name": "Rob Cowan", "side": "B"}, {"hcp": 6, "name": "Grant Norman", "side": "B"}, {"hcp": 28, "name": "Adam Syddall", "side": "B"}, {"hcp": 22, "name": "Richard Dixon", "side": "B"}, {"hcp": 20, "name": "Andy Gordon", "side": "B"}, {"hcp": 24, "name": "Richard Irons", "side": "B"}, {"hcp": null, "name": "Dave Cartwright", "side": "guest"}, {"hcp": null, "name": "Dan Belfit", "side": "guest"}, {"hcp": null, "name": "Luke Gledhill", "side": "guest"}, {"hcp": null, "name": "Rob Keleman", "side": "guest"}, {"hcp": null, "name": "Mike Segar", "side": "guest"}, {"hcp": null, "name": "Lee Murray", "side": "guest"}], "rounds": [{"allowance": 90, "course": "Mijas – Los Lagos", "format": "fourball", "matches": [{"a": ["", ""], "b": ["", ""], "id": "m1"}, {"a": ["", ""], "b": ["", ""], "id": "m2"}, {"a": ["", ""], "b": ["", ""], "id": "m3"}], "par": [5, 3, 4, 4, 5, 4, 4, 3, 4, 4, 3, 4, 5, 4, 5, 3, 4, 4], "si": [9, 17, 15, 7, 3, 1, 13, 5, 11, 2, 8, 10, 4, 6, 16, 18, 14, 12]}, {"allowance": 90, "course": "Los Arqueros", "format": "fourball", "matches": [{"a": ["", ""], "b": ["", ""], "id": "m1"}, {"a": ["", ""], "b": ["", ""], "id": "m2"}, {"a": ["", ""], "b": ["", ""], "id": "m3"}], "par": [4, 3, 4, 4, 3, 5, 4, 5, 4, 4, 3, 4, 5, 4, 4, 3, 4, 4], "si": [11, 17, 5, 13, 15, 3, 7, 1, 9, 4, 10, 2, 6, 18, 8, 16, 12, 14]}, {"allowance": 100, "course": "Lauro", "format": "singles", "matches": [{"a": [""], "b": [""], "id": "m1"}, {"a": [""], "b": [""], "id": "m2"}, {"a": [""], "b": [""], "id": "m3"}, {"a": [""], "b": [""], "id": "m4"}, {"a": [""], "b": [""], "id": "m5"}, {"a": [""], "b": [""], "id": "m6"}], "par": [4, 3, 4, 3, 5, 4, 5, 4, 4, 4, 3, 4, 5, 3, 4, 4, 5, 4], "si": [10, 18, 15, 12, 4, 5, 2, 14, 8, 16, 17, 11, 1, 7, 13, 3, 6, 9]}], "teams": {"A": {"name": "Bullet's Hookers"}, "B": {"name": "Cowan's Slicers"}}};
+const SEED_FINES = {"items": [{"id": "f01", "label": "Failure to report partner's fines", "amount": 5, "cat": "golf"}, {"id": "f02", "label": "Failing to get past the ladies' tee", "amount": 5, "cat": "golf"}, {"id": "f03", "label": "Urinating on the course", "amount": 5, "cat": "golf"}, {"id": "f04", "label": "Swearing on the course (or clubhouse)", "amount": 5, "cat": "golf"}, {"id": "f05", "label": "A \"Biggins\" – anything one would consider gay", "amount": 10, "cat": "golf"}, {"id": "f06", "label": "A \"Saddam Hussein\" – one bunker to another", "amount": 15, "cat": "golf"}, {"id": "f07", "label": "A \"Hiroshima\" – complete obliteration of any course facilities", "amount": 10, "cat": "golf"}, {"id": "f08", "label": "Club abuse, e.g. throwing, hitting the ground", "amount": 10, "cat": "golf"}, {"id": "f09", "label": "Mobile phone use on the course", "amount": 10, "cat": "golf"}, {"id": "f10", "label": "The Tourist – treating the game like a leisurely stroll: walking on lies, not repairing divots or pitch marks, failing to shout fore", "amount": 10, "cat": "golf"}, {"id": "f11", "label": "Interfering with another's ball in any way", "amount": 10, "cat": "golf"}, {"id": "f12", "label": "Arguing or disagreeing with the Fines Master", "amount": 10, "cat": "golf"}, {"id": "f13", "label": "Blatant cheating, poor maths", "amount": 10, "cat": "golf"}, {"id": "f14", "label": "Failure to partake in the amenities of the course (alcohol)", "amount": 10, "cat": "golf"}, {"id": "f15", "label": "Golfer attired in clothes older than 2 years", "amount": 10, "cat": "golf"}, {"id": "f16", "label": "An \"Oscar Pistorius\" – blindly and dangerously hitting a ball unsighted, endangering others", "amount": 15, "cat": "golf"}, {"id": "f17", "label": "Failing to get past the ladies' tee on second shot", "amount": 15, "cat": "golf"}, {"id": "f18", "label": "A number two in the trees, local restaurants etc.", "amount": 15, "cat": "golf"}, {"id": "f19", "label": "A \"Fred & Rosemary West\" – worst performing pair of the day, card buried under the floorboards", "amount": 15, "cat": "golf", "each": true}, {"id": "f20", "label": "Mulligan purchase", "amount": 15, "cat": "golf"}, {"id": "f21", "label": "An \"Osama Bin Laden\" – in the same hole, sand and water, never to be seen again", "amount": 20, "cat": "golf"}, {"id": "f22", "label": "Dropping the \"C\" bomb", "amount": 20, "cat": "golf"}, {"id": "f23", "label": "Causing danger to other golfers on the course", "amount": 20, "cat": "golf"}, {"id": "f24", "label": "Use of a leather wedge", "amount": 20, "cat": "golf"}, {"id": "f25", "label": "A \"Prince Andrew\" – offensive outfit, completely denying any wrongdoing, or claiming you physically cannot sweat", "amount": 20, "cat": "golf"}, {"id": "f26", "label": "Failing to attend any event on the itinerary", "amount": 40, "cat": "golf"}, {"id": "f27", "label": "Failing to attend golf or being late to the 1st tee", "amount": 100, "cat": "golf"}, {"id": "f28", "label": "Going for a walk to see the sights – gay", "amount": 5, "cat": "non"}, {"id": "f29", "label": "Sleeping while others golf", "amount": 10, "cat": "non"}, {"id": "f30", "label": "Seen not drinking an acceptable amount of alcohol", "amount": 10, "cat": "non"}, {"id": "f31", "label": "Not providing golfers with sufficient hydration at all times", "amount": 10, "cat": "non"}, {"id": "f32", "label": "Going shopping", "amount": 25, "cat": "non"}]};
+</script>
+<script>
+(function(){
+"use strict";
+/* ---------- state ---------- */
+let db=null, user=null, myId=null, isOwner=false, dbState='connecting';
+let CFG=null, FINELIST=[], SCORES={}, SCORERS={}, FINES=[], LEDGER={donations:{},paid:{}};
+const NAMES={}, asked=new Set();
+let myName=null; try{myName=localStorage.getItem('gt-me');}catch(e){}
+let fdb=null;
+const S={tab:'board',sub:'team',indRound:0,confirmAdj:null,confirmTake:false,round:0,group:null,hole:0,sel:new Set(),fineId:null,day:0,q:'',confirmDel:null};
+S.pinOpen=false; S.whoOpen=false;
+let draft=null, draftDirty=false, fdraft=null, fdirty=false, pendingRender=false;
+try{const t=localStorage.getItem('gt-tab'); if(t) S.tab=t; const d=localStorage.getItem('gt-day'); if(d!=null) S.day=+d;
+  const lm=JSON.parse(localStorage.getItem('gt-group')||'null'); if(lm){S.round=lm.r;S.group=lm.g;}}catch(e){}
+const save=(k,v)=>{try{localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v))}catch(e){}};
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const gbp=n=>'£'+(+n||0).toLocaleString('en-GB',{minimumFractionDigits:(n%1)?2:0,maximumFractionDigits:2});
+const half=n=>{const w=Math.floor(n),h=n-w>=.5;return (w||!h?String(w):'')+(h?'½':'');};
+const clone=o=>JSON.parse(JSON.stringify(o));
+const people=()=>CFG?.people||[];
+const person=n=>people().find(p=>p.name===n);
+const teamName=t=>CFG?.teams?.[t]?.name||('Team '+t);
+function short(n){ if(!n) return '—'; const parts=n.trim().split(/\s+/); const first=parts[0];
+  const dup=people().filter(p=>p.name.trim().split(/\s+/)[0]===first).length>1;
+  return dup&&parts[1]? first+' '+parts[1][0] : first; }
+const days=()=>[...(CFG?.rounds||[]).map(r=>r.course||'Round'),'Off course'];
+
+/* ---------- matchplay engine ---------- */
+const strokesOn=(rec,si)=>rec===0?0:rec>0?Math.floor(rec/18)+((si<=rec%18)?1:0):-(Math.floor(-rec/18)+((si>18-(-rec%18))?1:0));
+const DEF_ADJ=[-3,-2,-1,0,0,0,0,0,0,1,2,3];
+/* handicap for a round = starting handicap + adjustments applied after every earlier round */
+function hcpFor(n,ri){let h=+(person(n)?.hcp)||0; const adj=CFG?.adjust||{}; for(let i=0;i<ri;i++) h+=+(adj[i]?.[n])||0; return Math.round(h*10)/10;}
+function matchShots(r,m,ri){
+  const all=[...m.a,...m.b], allow=(+r.allowance||100)/100, ph={};
+  all.forEach(n=>{ph[n]=Math.round(hcpFor(n,ri)*allow)});
+  const low=Math.min(...all.map(n=>ph[n])), rec={};
+  all.forEach(n=>rec[n]=ph[n]-low);
+  return {ph,rec};
+}
+const docIdFor=(ri,mid)=>`r${ri+1}-${mid}`;
+const pend={}, inflight={}, timers={}, busy={};
+function gross(docId,p,h){
+  const k='h'+(h+1);
+  if(pend[docId]?.[p] && k in pend[docId][p]) return pend[docId][p][k];
+  if(inflight[docId]?.[p] && k in inflight[docId][p]) return inflight[docId][p][k];
+  const v=SCORES[docId]?.g?.[p]?.[k]; return v==null?null:v;
+}
+function siOf(r,h){const v=+r.si?.[h]; return v>=1&&v<=18?v:h+1;}
+function parOf(r,h){const v=+r.par?.[h]; return v>=3&&v<=6?v:4;}
+function matchState(ri,m){
+  const r=CFG.rounds[ri], docId=docIdFor(ri,m.id), players=[...m.a,...m.b];
+  if(!players.length||players.some(p=>!p)) return {ready:false,text:'Pairing not set',holes:[]};
+  const sh=matchShots(r,m,ri); let diff=0,thru=0,decided=false; const holes=[];
+  for(let h=0;h<18;h++){
+    const si=siOf(r,h), g={}, net={}; let complete=true;
+    players.forEach(p=>{const v=gross(docId,p,h); g[p]=v; if(v==null) complete=false; net[p]=(v==null||v===0)?null:v-strokesOn(sh.rec[p],si);});
+    let res=null, dead=false;
+    if(complete){
+      if(decided) dead=true; else {
+        const best=s=>{const v=s.map(p=>net[p]).filter(x=>x!=null); return v.length?Math.min(...v):Infinity;};
+        const A=best(m.a),B=best(m.b); res=A<B?'A':B<A?'B':'H';
+        if(res==='A')diff++; else if(res==='B')diff--; thru++;
+        if(Math.abs(diff)>18-thru) decided=true;
+      }
+    }
+    holes.push({g,net,res,si,par:parOf(r,h),complete,dead,run:complete&&!dead?diff:null});
+  }
+  const remaining=18-thru, finished=decided||thru===18, lead=diff>0?'A':diff<0?'B':(thru?'H':null);
+  let text, sub='';
+  if(!thru){text='Not started';}
+  else if(finished){text=diff===0?'Halved':(remaining>0?`${Math.abs(diff)}&${remaining}`:`${Math.abs(diff)} up`); sub=diff===0?'Final':`${teamName(lead)} win`;}
+  else {text=diff===0?'All square':`${Math.abs(diff)} up`; sub=`thru ${thru}`+(diff&&Math.abs(diff)===remaining?' · dormie':'');}
+  const pA=!thru?0:diff>0?1:diff<0?0:.5;
+  return {ready:true,thru,diff,finished,started:thru>0,lead,text,sub,holes,sh,pA,pB:thru?1-pA:0};
+}
+/* individual Stableford for one round, ranked with countback (back 9, last 6, last 3, last hole) */
+function standings(ri){
+  const r=CFG.rounds[ri], allow=(+CFG.indivAllowance||100)/100, tbl=CFG.adjTable||DEF_ADJ, rows=[];
+  const sum=a=>a.reduce((x,y)=>x+y,0);
+  r.matches.forEach(m=>{const id=docIdFor(ri,m.id); [...m.a,...m.b].forEach(p=>{ if(!p) return;
+    const hc=hcpFor(p,ri), ph=Math.round(hc*allow), pts=[]; let played=0;
+    for(let h=0;h<18;h++){const g=gross(id,p,h); if(g!=null) played++;
+      pts.push(g==null||g===0?0:Math.max(0,2+parOf(r,h)-(g-strokesOn(ph,siOf(r,h)))));}
+    rows.push({p,team:person(p)?.side,hc,ph,played,tot:sum(pts),cb:[sum(pts.slice(9)),sum(pts.slice(12)),sum(pts.slice(15)),pts[17]]});});});
+  const same=(a,b)=>a.tot===b.tot&&a.cb.every((v,i)=>v===b.cb[i]);
+  rows.sort((a,b)=>b.tot-a.tot||b.cb[0]-a.cb[0]||b.cb[1]-a.cb[1]||b.cb[2]-a.cb[2]||b.cb[3]-a.cb[3]||a.p.localeCompare(b.p));
+  const applied=CFG.adjust?.[ri];
+  rows.forEach((x,i)=>{x.pos=i+1; x.tied=(i>0&&same(rows[i-1],x))||(i<rows.length-1&&same(rows[i+1],x));
+    x.adj=applied?(+applied[x.p]||0):(+tbl[i]||0);});
+  return {rows,applied:!!applied,done:rows.length>0&&rows.every(x=>x.played===18)};
+}
+function totals(){
+  let A=0,B=0,pA=0,pB=0,done=0,n=0,live=false;
+  (CFG?.rounds||[]).forEach((r,ri)=>r.matches.forEach(m=>{n++; const s=matchState(ri,m); if(!s.ready) return;
+    if(s.finished){A+=s.pA;B+=s.pB;done++;} else if(s.started){pA+=s.pA;pB+=s.pB;live=true;}}));
+  return {A,B,pA:A+pA,pB:B+pB,done,n,live,liveA:pA,liveB:pB,toWin:n/2+.5};
+}
+
+/* ---------- writes ---------- */
+function writeFail(e){
+  if(e?.code==='invalid_argument'||e?.code==='permission-denied') toast('That change was refused by the database. Tell Adam.');
+  else if(e?.code==='quota_exceeded') toast('Storage is full. Tell Adam.');
+  else toast('Could not save. Check your signal and try again.');
+}
+function queueScore(ri,mid,p,h,v){
+  if(!fdb){toast('Not connected, so this score was not saved.');return;}
+  fdb.doc('scores/'+docIdFor(ri,mid)).set({round:ri+1,match:mid,g:{[p]:{['h'+(h+1)]:v}}},{merge:true}).catch(writeFail);
+  return;
+  const id=docIdFor(ri,mid); ((pend[id]=pend[id]||{})[p]=pend[id][p]||{})['h'+(h+1)]=v;
+  clearTimeout(timers[id]); timers[id]=setTimeout(()=>flush(id,ri,mid),450); render(true);
+}
+async function flush(id,ri,mid){
+  if(busy[id]){timers[id]=setTimeout(()=>flush(id,ri,mid),300);return;}
+  const ch=pend[id]; if(!ch) return; delete pend[id]; inflight[id]=ch; busy[id]=true;
+  const ref=db.doc('scores/'+id);
+  try{
+    try{ await ref.update({g:ch}); }
+    catch(e){
+      if(e?.code==='unavailable'){ await new Promise(r=>setTimeout(r,600+Math.random()*600)); await ref.update({g:ch}); }
+      else if(e?.code==='invalid_argument'){ const s=await ref.get(); if(s.exists) throw e; await ref.set({round:ri+1,match:mid,g:ch}); }
+      else throw e;
+    }
+  }catch(e){ writeFail(e); }
+  finally{ delete inflight[id]; busy[id]=false; render(); }
+}
+async function upsert(path,patch,base){
+  return fdb.doc(path).set(patch,{merge:true});
+  const ref=db.doc(path);
+  try{ await ref.update(patch); }
+  catch(e){ if(e?.code!=='invalid_argument') throw e; const s=await ref.get(); if(s.exists) throw e; await ref.set(Object.assign(base||{},patch)); }
+}
+
+/* ---------- toast ---------- */
+let tt=null;
+function toast(msg,undo){
+  const t=$('#toast'); t.innerHTML=`<span>${esc(msg)}</span>`+(undo?'<button type="button">Undo</button>':'');
+  if(undo) t.querySelector('button').onclick=()=>{t.hidden=true;undo();};
+  t.hidden=false; clearTimeout(tt); tt=setTimeout(()=>t.hidden=true,undo?6000:3500);
+}
+
+/* ---------- views ---------- */
+function emptyCfg(){
+  return `<div class="panel"><h2>Getting set up</h2><p class="muted">Teams, handicaps and pairings appear here once the organiser saves them in Setup.</p></div>`;
+}
+function siWarn(r){ return (r.si||[]).filter(v=>+v>=1).length===18?'':`<div class="banner small">Stroke index for ${esc(r.course)} is not entered yet, so handicap shots are a placeholder.</div>`; }
+function mRow(ri,m){
+  const s=matchState(ri,m), cls=s.started?s.lead:'';
+  return `<button class="mrow" data-act="open" data-r="${ri}" data-m="${esc(m.id)}">
+    <span class="side a">${m.a.map(short).join(' & ')}</span>
+    <span class="pill ${cls}">${esc(s.text)}${s.sub?`<small>${esc(s.sub)}</small>`:''}</span>
+    <span class="side b">${m.b.map(short).join(' & ')}</span></button>`;
+}
+const subTabs=()=>`<div class="rtabs" role="group" aria-label="View"><button data-act="sub" data-s="team" aria-pressed="${S.sub!=='ind'}">Team matches</button><button data-act="sub" data-s="ind" aria-pressed="${S.sub==='ind'}">Individual &amp; handicaps</button></div>`;
+const sgn=v=>v>0?'+'+v:v<0?'−'+(-v):'0';
+function vInd(){
+  const ri=Math.min(S.indRound,CFG.rounds.length-1), st=standings(ri), last=ri===CFG.rounds.length-1;
+  const unfinished=st.rows.filter(x=>x.played<18).length;
+  const rows=st.rows.map(x=>`<tr><td class="num">${x.tied?'=':''}${x.pos}</td><td style="color:var(--${x.team==='B'?'b':'a'})"><b>${esc(short(x.p))}</b></td><td class="num">${x.played===18?'F':x.played}</td><td class="num"><b>${x.tot}</b></td><td class="num">${x.ph}</td><td class="num ${x.adj<0?'':'owed'}" style="${x.adj<0?'color:var(--green)':''}">${x.adj?sgn(x.adj):'–'}</td></tr>`).join('');
+  let ctrl='';
+  if(isOwner&&!last){
+    if(st.applied) ctrl=`<p class="small"><b>Adjustments applied.</b> Round ${ri+2} handicaps include them.</p><button class="btn" data-act="undoadj" data-r="${ri}">Remove Round ${ri+1} adjustments</button>`;
+    else if(S.confirmAdj===ri) ctrl=`<p class="small">${unfinished?`<b>${unfinished} player${unfinished===1?' has':'s have'} not finished.</b> `:''}This changes everyone's handicap for Round ${ri+2} onwards.</p><div class="row"><button class="btn primary" data-act="applyadj" data-r="${ri}">Yes, apply them</button><button class="btn" data-act="noadj">Cancel</button></div>`;
+    else ctrl=`<button class="btn primary" data-act="askadj" data-r="${ri}" ${st.rows.length?'':'disabled'}>Apply Round ${ri+1} adjustments</button>`;
+  } else if(!last) ctrl=`<p class="small muted">${st.applied?`Adjustments applied to Round ${ri+2} handicaps.`:`Adjustments are provisional until the organiser applies them after the round.`}</p>`;
+  const golfers=people().filter(p=>p.side==='A'||p.side==='B');
+  const hrows=golfers.map(p=>`<tr><td style="color:var(--${p.side==='B'?'b':'a'})"><b>${esc(short(p.name))}</b></td>${CFG.rounds.map((_,i)=>`<td class="num">${hcpFor(p.name,i)}</td>`).join('')}</tr>`).join('');
+  return `<div class="stack">${subTabs()}
+  <section class="panel">
+    <div class="rhead"><h3>Daily standings</h3><span class="eyebrow">Individual Stableford · ${+CFG.indivAllowance||100}% handicap</span></div>
+    <div class="rtabs">${CFG.rounds.map((x,i)=>`<button data-act="indround" data-r="${i}" aria-pressed="${i===ri}">R${i+1} ${esc(x.course)}</button>`).join('')}</div>
+    ${siWarn(CFG.rounds[ri])}
+    ${st.rows.length?`<div class="scroll"><table class="ledger num" style="min-width:0"><thead><tr><th>Pos</th><th>Player</th><th>Thru</th><th>Pts</th><th>Hcp</th><th>Adj</th></tr></thead><tbody>${rows}</tbody></table></div>`:'<p class="muted">Standings appear once pairings are set and scores go in.</p>'}
+    <p class="small muted">Ties are split on countback: back 9, last 6, last 3, then the 18th. A pick-up scores 0 points. "=" means still level after countback.</p>
+    ${ctrl}
+  </section>
+  <section class="panel"><h3>Handicap by round</h3>
+    ${golfers.length?`<div class="scroll"><table class="ledger num" style="min-width:0"><thead><tr><th>Player</th>${CFG.rounds.map((x,i)=>`<th>R${i+1}</th>`).join('')}</tr></thead><tbody>${hrows}</tbody></table></div>`:'<p class="muted">Handicaps appear once the teams are set.</p>'}
+    <p class="small muted">Before the match allowance (${CFG.rounds.map(r=>(+r.allowance||100)+'%').join(' / ')}).</p>
+  </section></div>`;
+}
+function vBoard(){
+  if(!CFG) return emptyCfg();
+  if(S.sub==='ind') return vInd();
+  const t=totals(), seg=v=>(v/t.n*100).toFixed(2)+'%';
+  const rounds=CFG.rounds.map((r,ri)=>`<section class="panel">
+      <div class="rhead"><h3>Round ${ri+1} · ${esc(r.course)}</h3><span class="eyebrow">${r.format==='singles'?'Singles':'Better ball pairs'} · ${+r.allowance||100}%</span></div>
+      <div class="mlist">${r.matches.map(m=>mRow(ri,m)).join('')}</div></section>`).join('');
+  return `<div class="stack">${subTabs()}
+    <section class="hero">
+      <div class="team a"><span class="tname">${esc(teamName('A'))}</span><span class="pts num">${half(t.A)}</span><span class="proj">${t.live?'Live: '+half(t.pA):''}</span></div>
+      <div class="mid"><b class="num">${half(t.toWin)}</b>to win<span>${t.done}/${t.n} done</span></div>
+      <div class="team b"><span class="tname">${esc(teamName('B'))}</span><span class="pts num">${half(t.B)}</span><span class="proj">${t.live?'Live: '+half(t.pB):''}</span></div>
+    </section>
+    <div class="track" aria-hidden="true"><span class="ca" style="width:${seg(t.A)}"></span><span class="pa" style="width:${seg(t.liveA)}"></span><span class="open"></span><span class="pb" style="width:${seg(t.liveB)}"></span><span class="cb" style="width:${seg(t.B)}"></span></div>
+    ${rounds}
+    ${finesShame(5)}
+  </div>`;
+}
+/* a "group" is one four-ball on the course: one better-ball match, or two singles matches */
+function groupsOf(ri){const r=CFG.rounds[ri]; if(!r) return []; if(r.format==='singles'){const g=[];for(let i=0;i<r.matches.length;i+=2)g.push(r.matches.slice(i,i+2));return g;} return r.matches.map(m=>[m]);}
+const groupIndexOf=(ri,mid)=>groupsOf(ri).findIndex(g=>g.some(m=>m.id===mid));
+const groupKey=(ri,gi)=>`r${ri+1}-g${gi+1}`;
+function groupLabel(g){return g.map(m=>`${m.a.map(short).join(' & ')} v ${m.b.map(short).join(' & ')}`).join(' · ');}
+function scorerOf(ri,gi){const s=SCORERS[groupKey(ri,gi)]; if(s?.by&&s.name) NAMES[s.by]=short(s.name); return s?.by||null;}
+function canScore(ri,gi){const s=scorerOf(ri,gi); return !myId||!s||s===myId;}
+function vCards(){
+  if(!CFG) return emptyCfg();
+  const gs=groupsOf(S.round), grp=S.group==null?null:gs[S.group];
+  if(!grp){
+    return `<div class="stack"><section class="panel"><h2>Pick your group</h2>
+      <p class="small muted">One person in each group of four keeps the card for everyone in it.</p>
+      <div class="rtabs">${CFG.rounds.map((x,i)=>`<button data-act="round" data-r="${i}" aria-pressed="${i===S.round}">R${i+1} ${esc(x.course)}</button>`).join('')}</div>
+      <div class="mlist">${gs.map((g,gi)=>{const sc=scorerOf(S.round,gi);return `<button class="mrow" style="grid-template-columns:1fr auto" data-act="opengroup" data-g="${gi}"><span class="side"><span class="eyebrow">Group ${gi+1}</span><br>${esc(groupLabel(g))}</span><span class="small muted">${sc?(sc===myId?'You are scoring':'Scorer: '+esc(NAMES[sc]||'taken')):'No scorer yet'}</span></button>`;}).join('')}</div></section></div>`;
+  }
+  const r=CFG.rounds[S.round], states=grp.map(m=>({m,st:matchState(S.round,m)}));
+  if(states.some(x=>!x.st.ready)) return `<div class="panel"><button class="back" data-act="close">‹ All groups</button><p>This group's pairings aren't set yet.</p></div>`;
+  const h=S.hole, gi=S.group, sc=scorerOf(S.round,gi), edit=canScore(S.round,gi), dis=edit?'':'disabled';
+  let scBox;
+  if(!sc) scBox=`<div class="banner small">No one is keeping this card yet. The first person to enter a score becomes the scorer.</div>`;
+  else if(sc===myId) scBox=`<div class="row small"><span><b>You are keeping score</b> for this group.</span><button class="link" style="color:var(--muted);flex:0 0 auto" data-act="release">Hand over</button></div>`;
+  else scBox=`<div class="banner small"><b>${esc(NAMES[sc]||'Someone else')}</b> is keeping score, so this card is view only. ${S.confirmTake?`<button class="link" data-act="take">Yes, take over</button> <button class="link" style="color:var(--muted)" data-act="notake">Cancel</button>`:`<button class="link" data-act="asktake">Take over</button> (if their phone dies)`}</div>`;
+  const statusOf=({m,st})=>`<div class="status ${st.started?st.lead:''}" style="font-size:${grp.length>1?24:30}px">${grp.length>1?`<small style="margin-bottom:2px">${esc(m.a.map(short).join(' & '))} v ${esc(m.b.map(short).join(' & '))}</small>`:''}${esc(st.text)}<small>${st.started&&st.lead&&st.lead!=='H'?esc(teamName(st.lead))+' · ':''}${esc(st.sub||'')}</small></div>`;
+  const prow=(p,side,m,st)=>{const id=docIdFor(S.round,m.id), hs=st.holes[h], v=gross(id,p,h), shn=strokesOn(st.sh.rec[p],hs.si);
+    return `<div class="prow ${side}"><div class="pn">${esc(short(p))} <span class="dots" title="${shn} shot${shn===1?'':'s'} on this hole">${'●'.repeat(Math.max(0,shn))}</span>
+      <small>Playing hcp ${st.sh.ph[p]} · ${st.sh.rec[p]} shot${st.sh.rec[p]===1?'':'s'} in match${hs.net[p]!=null?' · net '+hs.net[p]:''}</small></div>
+      <div class="ctrl">
+        <button class="step" data-act="dec" data-p="${esc(p)}" ${dis} aria-label="One fewer for ${esc(p)}">−</button>
+        <button class="val ${v==null?'empty':''}" data-act="par" data-p="${esc(p)}" ${dis} aria-label="Score for ${esc(p)}">${v==null?'Par?':v===0?'P':v}</button>
+        <button class="step" data-act="inc" data-p="${esc(p)}" ${dis} aria-label="One more for ${esc(p)}">+</button>
+        <button class="pu" data-act="pu" data-p="${esc(p)}" ${dis} aria-pressed="${v===0}">Pick up</button>
+      </div></div>`;};
+  const resOf=({m,st})=>{const hs=st.holes[h], miss=[...m.a,...m.b].filter(p=>hs.g[p]==null).length;
+    const who=grp.length>1?esc(m.a.map(short).join(' & '))+' v '+esc(m.b.map(short).join(' & '))+': ':'';
+    return who+(hs.dead?'match already decided':hs.res==='A'?`${esc(teamName('A'))} win the hole`:hs.res==='B'?`${esc(teamName('B'))} win the hole`:hs.res==='H'?'hole halved':`waiting for ${miss} score${miss===1?'':'s'}`);};
+  const holeCls=i=>{if(grp.length===1){const x=states[0].st.holes[i];return x.dead?'dead':x.res||'';} return states.every(s=>s.st.holes[i].complete)?'H':'';};
+  const pA=states.reduce((a,s)=>a+(s.st.started?s.st.pA:0),0), pB=states.reduce((a,s)=>a+(s.st.started?s.st.pB:0),0);
+  const anyStarted=states.some(s=>s.st.started), allDone=states.every(s=>s.st.finished);
+  const hs0=states[0].st.holes[h];
+  const cardRows=states.map(({m,st},k)=>[...m.a,...m.b].map(p=>`<tr><td>${esc(short(p))}</td>${st.holes.map(x=>{const v=x.g[p];const s=strokesOn(st.sh.rec[p],x.si);return `<td>${v==null?'':v===0?'P':v}${s>0?`<sup>${'•'.repeat(s)}</sup>`:''}</td>`}).join('')}</tr>`).join('')+
+    `<tr><td>${grp.length>1?'Match '+(k+1):'Match'}</td>${st.holes.map(x=>x.run==null?'<td></td>':`<td class="${x.run>0?'A':x.run<0?'B':''}">${x.run===0?'AS':Math.abs(x.run)+(x.run>0?'A':'B')}</td>`).join('')}</tr>`).join('');
+  return `<div class="stack"><section class="panel">
+    <button class="back" data-act="close">‹ All groups</button>
+    <div class="rhead"><span class="eyebrow">Round ${S.round+1} · ${esc(r.course)} · Group ${gi+1}</span><span class="eyebrow">${r.format==='singles'?'Two singles matches':'Better ball'}</span></div>
+    ${states.map(statusOf).join('')}
+    ${anyStarted?`<div class="small" style="text-align:center">Points from this group ${allDone?'':'(live) '}: <b style="color:var(--a)">${esc(teamName('A'))} ${half(pA)}</b> – <b style="color:var(--b)">${half(pB)} ${esc(teamName('B'))}</b></div>`:''}
+    ${scBox}
+    ${siWarn(r)}
+    <div class="holes">${Array.from({length:18},(_,i)=>`<button data-act="hole" data-h="${i}" class="${holeCls(i)}" aria-current="${i===h}">${i+1}</button>`).join('')}</div>
+    <div class="hinfo"><h3>Hole ${h+1}</h3><span class="muted">Par ${hs0.par} · SI ${hs0.si}</span></div>
+    <div>${states.map(({m,st},k)=>(grp.length>1?`<div class="eyebrow" style="padding-top:8px">Match ${k+1}</div>`:'')+m.a.map(p=>prow(p,'a',m,st)).join('')+m.b.map(p=>prow(p,'b',m,st)).join('')).join('')}</div>
+    <div class="hres">${states.map(resOf).join('<br>')}</div>
+    <div class="hnav"><button class="btn" data-act="hole" data-h="${Math.max(0,h-1)}" ${h===0?'disabled':''}>‹ Hole ${h}</button><button class="btn primary" data-act="hole" data-h="${Math.min(17,h+1)}" ${h===17?'disabled':''}>Hole ${h+2} ›</button></div>
+    <p class="small muted">Enter everyone's gross score. Shots, net scores, holes won and points are worked out for you. Gold dots are handicap shots. Tap the score box to enter par, then adjust with − and +.</p>
+  </section>
+  <section class="panel"><h3>Full card</h3><div class="scroll"><table class="card num">
+    <thead><tr><th>Hole</th>${hs0?Array.from({length:18},(_,i)=>`<th>${i+1}</th>`).join(''):''}</tr></thead>
+    <tbody><tr><td class="muted">Par</td>${states[0].st.holes.map(x=>`<td class="muted">${x.par}</td>`).join('')}</tr>
+    <tr><td class="muted">SI</td>${states[0].st.holes.map(x=>`<td class="muted">${x.si}</td>`).join('')}</tr>
+    ${cardRows}
+    </tbody></table></div></section></div>`;
+}
+function fineTotals(){
+  const t={}; people().forEach(p=>t[p.name]={tot:0,byDay:{}});
+  FINES.forEach(f=>{const o=t[f.p]||(t[f.p]={tot:0,byDay:{}}); o.tot+=+f.amt||0; o.byDay[f.day]=(o.byDay[f.day]||0)+(+f.amt||0);});
+  return t;
+}
+function finesShame(limit){
+  const t=fineTotals(), rows=Object.entries(t).filter(([,v])=>v.tot>0).sort((a,b)=>b[1].tot-a[1].tot).slice(0,limit||99);
+  if(!rows.length) return `<section class="panel"><h3>Fines table</h3><p class="muted">No fines yet. Give it until the first tee.</p></section>`;
+  const max=rows[0][1].tot;
+  return `<section class="panel"><h3>Fines table</h3><div class="shame">${rows.map(([n,v],i)=>`<div class="sr"><span class="muted num">${i+1}</span><span><b>${esc(short(n))}</b></span><span class="num"><b>${gbp(v.tot)}</b></span><div class="barw"><span style="width:${(v.tot/max*100).toFixed(1)}%"></span></div></div>`).join('')}</div></section>`;
+}
+function fineListHTML(){
+  const q=S.q.trim().toLowerCase(), cats=[['golf','Golf fines'],['non','Non-golfer fines']];
+  let out='';
+  cats.forEach(([c,label])=>{const items=FINELIST.filter(f=>(f.cat||'golf')===c&&(!q||f.label.toLowerCase().includes(q)));
+    if(items.length) out+=`<div class="fcat">${label}</div>`+items.map(f=>`<button class="fitem" data-act="pickfine" data-id="${esc(f.id)}" aria-pressed="${S.fineId===f.id}"><span>${esc(f.label)}${f.each?' <span class="small">(each)</span>':''}</span><b class="num">${gbp(f.amount)}</b></button>`).join('');});
+  return out||'<p class="muted small" style="padding:8px">No fine matches that. Use a custom fine below.</p>';
+}
+function vFines(){
+  if(!CFG) return emptyCfg();
+  const f=FINELIST.find(x=>x.id===S.fineId), n=S.sel.size;
+  const chips=people().map(p=>`<button class="chip ${p.side==='A'?'ta':p.side==='B'?'tb':''}" data-act="who" data-n="${esc(p.name)}" aria-pressed="${S.sel.has(p.name)}">${esc(short(p.name))}</button>`).join('');
+  const recent=FINES.slice(0,40).map(x=>{
+    const canDel=isOwner||(myName&&x.by===myName), confirm=S.confirmDel===x.id;
+    return `<div class="fe"><span><b>${esc(short(x.p))}</b> · ${esc(x.label)}</span><span class="amt num">${gbp(x.amt)}</span>
+      <span class="meta"><span>${esc(days()[x.day]||'')}</span><span>${new Date(x.at).toLocaleString('en-GB',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</span><span>by ${esc(x.by?short(x.by):'someone')}</span>
+      ${canDel?(confirm?`<button class="link" data-act="del" data-id="${esc(x.id)}">Yes, remove it</button><button class="link" style="color:var(--muted)" data-act="nodel">Keep</button>`:`<button class="link" data-act="askdel" data-id="${esc(x.id)}">Remove</button>`):''}</span></div>`;}).join('');
+  return `<div class="stack">
+  <section class="panel">
+    <h2>Log a fine</h2>
+    <div class="eyebrow">Who? Tap one or more</div>
+    <div class="chips">${chips}</div>
+    <div class="eyebrow">What for?</div>
+    <input type="search" id="fineSearch" placeholder="Search the fines list" value="${esc(S.q)}">
+    <div class="flist" id="fineList">${fineListHTML()}</div>
+    <div class="row">
+      <select id="fineDay" aria-label="Where">${days().map((d,i)=>`<option value="${i}" ${i===S.day?'selected':''}>${esc(d)}</option>`).join('')}</select>
+      <button class="btn primary" data-act="logfine" ${!f||!n?'disabled':''}>${!n?'Pick who':!f?'Pick a fine':`Fine ${n===1?esc(short([...S.sel][0])):n+' people'} ${gbp(f.amount*n)}`}</button>
+    </div>
+    <details><summary class="small muted">Custom fine</summary>
+      <div class="row" style="margin-top:8px"><input type="text" id="cLabel" placeholder="What did they do?"><input type="number" id="cAmt" placeholder="£" min="0" step="1" inputmode="decimal" style="flex:0 1 90px"><button class="btn" data-act="logcustom">Add</button></div>
+    </details>
+    <p class="rule">In the event of a disagreement, the decision of the Fines Master, ${esc(CFG.finesMaster||'Trevor Wragg')}, is full and final. No appeal process is available.</p>
+  </section>
+  ${finesShame()}
+  <section class="panel"><h3>Latest fines</h3><div class="feed">${recent||'<p class="muted">Nothing logged yet.</p>'}</div></section>
+  </div>`;
+}
+function vMoney(){
+  if(!CFG) return emptyCfg();
+  const t=fineTotals(), d=days(), don=LEDGER.donations||{}, paid=LEDGER.paid||{};
+  let sum={days:d.map(()=>0),fines:0,don:0,paid:0,owed:0};
+  const rows=people().map(p=>{const o=t[p.name]||{tot:0,byDay:{}}, dn=+don[p.name]||0, pd=+paid[p.name]||0, owed=o.tot+dn-pd;
+    d.forEach((_,i)=>sum.days[i]+=o.byDay[i]||0); sum.fines+=o.tot; sum.don+=dn; sum.paid+=pd; sum.owed+=owed;
+    const inp=(k,v)=>isOwner?`<input type="number" min="0" step="1" inputmode="decimal" data-ledger="${k}" data-n="${esc(p.name)}" value="${v||''}" aria-label="${k} for ${esc(p.name)}">`:gbp(v);
+    return `<tr><td>${esc(p.name)}</td>${d.map((_,i)=>`<td>${o.byDay[i]?gbp(o.byDay[i]):'–'}</td>`).join('')}<td><b>${gbp(o.tot)}</b></td><td>${inp('donations',dn)}</td><td>${inp('paid',pd)}</td><td class="${owed>0?'owed':''}">${gbp(owed)}</td></tr>`;}).join('');
+  return `<div class="stack"><section class="panel">
+    <h2>Charity pot</h2>
+    <div class="row"><div><span class="eyebrow">Fines</span><h3 class="num">${gbp(sum.fines)}</h3></div><div><span class="eyebrow">Donations</span><h3 class="num">${gbp(sum.don)}</h3></div><div><span class="eyebrow">Collected</span><h3 class="num">${gbp(sum.paid)}</h3></div><div><span class="eyebrow">Still owed</span><h3 class="num owed">${gbp(sum.owed)}</h3></div></div>
+    ${isOwner?'<p class="small muted">Type donations and payments straight into the table. They save when you leave the box.</p>':''}
+    <div class="scroll"><table class="ledger num"><thead><tr><th>Name</th>${d.map(x=>`<th>${esc(x)}</th>`).join('')}<th>Fines</th><th>Donation</th><th>Paid</th><th>Owed</th></tr></thead>
+    <tbody>${rows}</tbody><tfoot><tr><td>Total</td>${sum.days.map(v=>`<td>${gbp(v)}</td>`).join('')}<td>${gbp(sum.fines)}</td><td>${gbp(sum.don)}</td><td>${gbp(sum.paid)}</td><td>${gbp(sum.owed)}</td></tr></tfoot></table></div>
+  </section></div>`;
+}
+/* ---------- setup (owner) ---------- */
+const blankMatches=f=>Array.from({length:f==='singles'?6:3},(_,i)=>({id:'m'+(i+1),a:Array(f==='singles'?1:2).fill(''),b:Array(f==='singles'?1:2).fill('')}));
+function vSetup(){
+  if(!isOwner) return `<div class="panel"><p>Unlock organiser mode to change the setup.</p></div>`;
+  if(!draft||!draftDirty) draft=clone(CFG||{eventName:'Spain Golf Trip 2026',finesMaster:'Trevor Wragg',teams:{A:{name:'Team A'},B:{name:'Team B'}},people:[],rounds:[]});
+  if(!fdraft||!fdirty) fdraft=clone(FINELIST);
+  const golfers=t=>draft.people.filter(p=>p.side===t).map(p=>p.name);
+  const countA=golfers('A').length, countB=golfers('B').length;
+  const sel=(path,val,opts)=>`<select data-path="${path}"><option value="">—</option>${opts.map(o=>`<option ${o===val?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+  const roundsHTML=draft.rounds.map((r,ri)=>`<section class="panel">
+    <h3>Round ${ri+1}</h3>
+    <div class="row"><label class="small">Course<input type="text" data-path="rounds.${ri}.course" value="${esc(r.course)}"></label>
+      <label class="small">Format<select data-path="rounds.${ri}.format" data-rebuild="1"><option value="fourball" ${r.format!=='singles'?'selected':''}>Better ball pairs</option><option value="singles" ${r.format==='singles'?'selected':''}>Singles</option></select></label>
+      <label class="small">Allowance %<input type="number" data-path="rounds.${ri}.allowance" data-num="1" value="${esc(r.allowance)}"></label></div>
+    <div class="eyebrow">Par</div><div class="grid18">${Array.from({length:18},(_,h)=>`<label>${h+1}<input type="number" inputmode="numeric" data-path="rounds.${ri}.par.${h}" data-num="1" value="${r.par?.[h]??''}"></label>`).join('')}</div>
+    <div class="eyebrow">Stroke index</div><div class="grid18">${Array.from({length:18},(_,h)=>`<label>${h+1}<input type="number" inputmode="numeric" data-path="rounds.${ri}.si.${h}" data-num="1" value="${r.si?.[h]??''}"></label>`).join('')}</div>
+    <div class="eyebrow">Pairings</div>
+    ${r.matches.map((m,mi)=>`<div class="match-ed"><div class="col">${m.a.map((p,k)=>sel(`rounds.${ri}.matches.${mi}.a.${k}`,p,golfers('A'))).join('')}</div><span class="vs">v</span><div class="col">${m.b.map((p,k)=>sel(`rounds.${ri}.matches.${mi}.b.${k}`,p,golfers('B'))).join('')}</div></div>`).join('')}
+  </section>`).join('');
+  return `<div class="stack">
+  <section class="panel"><h2>Setup</h2>
+    <p class="small muted">Only phones in organiser mode see this tab. Changes go live for everyone when you press Save.</p>
+    <div class="row"><label class="small">Event name<input type="text" data-path="eventName" value="${esc(draft.eventName)}"></label><label class="small">Fines Master<input type="text" data-path="finesMaster" value="${esc(draft.finesMaster)}"></label></div>
+    <div class="row"><label class="small" style="color:var(--a)">Team A name<input type="text" data-path="teams.A.name" value="${esc(draft.teams.A.name)}"></label><label class="small" style="color:var(--b)">Team B name<input type="text" data-path="teams.B.name" value="${esc(draft.teams.B.name)}"></label></div>
+    <button class="btn primary" data-act="savecfg" ${draftDirty?'':'disabled'}>${draftDirty?'Save setup':'Setup saved'}</button>
+  </section>
+  <section class="panel"><h3>People and handicaps</h3>
+    <p class="small muted">${countA} in ${esc(draft.teams.A.name)}, ${countB} in ${esc(draft.teams.B.name)}. Enter each golfer's starting playing handicap. Daily adjustments are added on top automatically when you apply them.</p>
+    <div class="prs">${draft.people.map((p,i)=>`<div class="pr"><input type="text" data-path="people.${i}.name" value="${esc(p.name)}" aria-label="Name"><select data-path="people.${i}.side" data-rebuild="1" aria-label="Team"><option value="" ${!p.side?'selected':''}>Unassigned</option><option value="A" ${p.side==='A'?'selected':''}>${esc(draft.teams.A.name)}</option><option value="B" ${p.side==='B'?'selected':''}>${esc(draft.teams.B.name)}</option><option value="guest" ${p.side==='guest'?'selected':''}>Non-golfer</option></select><input type="number" step="0.1" data-path="people.${i}.hcp" data-num="1" value="${p.hcp??''}" placeholder="Hcp" aria-label="Handicap" ${p.side==='guest'?'disabled':''}><button class="btn" style="padding:0" data-act="delperson" data-i="${i}" aria-label="Remove ${esc(p.name)}">×</button></div>`).join('')}</div>
+    <button class="btn" data-act="addperson">Add person</button>
+  </section>
+  <section class="panel"><h3>Handicap adjustments</h3>
+    <p class="small muted">Shots added or taken off by daily individual position. Negative numbers cut the handicap.</p>
+    <div class="grid18" style="grid-template-columns:repeat(6,1fr)">${Array.from({length:12},(_,i)=>`<label>${i+1}${['st','nd','rd'][i]||'th'}<input type="number" data-path="adjTable.${i}" data-num="1" value="${(draft.adjTable||DEF_ADJ)[i]??0}"></label>`).join('')}</div>
+    <label class="small" style="max-width:220px">Handicap used for standings (%)<input type="number" data-path="indivAllowance" data-num="1" value="${draft.indivAllowance??100}"></label>
+  </section>
+  ${roundsHTML}
+  <button class="btn primary" data-act="savecfg" ${draftDirty?'':'disabled'}>${draftDirty?'Save setup':'Setup saved'}</button>
+  <section class="panel"><h3>Fines list</h3>
+    ${fdraft.map((f,i)=>`<div class="fed"><input type="text" data-fpath="${i}.label" value="${esc(f.label)}" aria-label="Fine"><input type="number" data-fpath="${i}.amount" data-num="1" value="${f.amount}" aria-label="Amount"><select data-fpath="${i}.cat" aria-label="Category"><option value="golf" ${f.cat!=='non'?'selected':''}>Golf</option><option value="non" ${f.cat==='non'?'selected':''}>Non-golfer</option></select><button class="btn" style="padding:0" data-act="delfine" data-i="${i}" aria-label="Remove fine">×</button></div>`).join('')}
+    <div class="row"><button class="btn" data-act="addfine">Add fine</button><button class="btn primary" data-act="savefines" ${fdirty?'':'disabled'}>${fdirty?'Save fines list':'Fines list saved'}</button></div>
+  </section></div>`;
+}
+function setPath(obj,path,val){const k=path.split('.');let o=obj;for(let i=0;i<k.length-1;i++){if(o[k[i]]==null)o[k[i]]=/^\d+$/.test(k[i+1])?[]:{};o=o[k[i]];}o[k[k.length-1]]=val;}
+
+/* ---------- render ---------- */
+const VIEWS={board:vBoard,cards:vCards,fines:vFines,money:vMoney,setup:vSetup};
+function render(force){
+  const ae=document.activeElement;
+  if(!force&&ae&&ae.matches&&ae.matches('#app input,#app select')){pendingRender=true;return;}
+  pendingRender=false;
+  if(S.tab==='setup'&&!isOwner) S.tab='board';
+  document.querySelectorAll('.tabbar button').forEach(b=>b.setAttribute('aria-current',b.dataset.tab===S.tab?'page':'false'));
+  $('#setupTab').hidden=!isOwner;
+  const live=$('#live'); live.className='live'+(dbState==='live'?' on':'');
+  live.querySelector('span').textContent=dbState==='live'?(navigator.onLine?'Live':'No signal: entries are saved on this phone and send when signal returns'):dbState==='off'?'Not connected':'Connecting…';
+  $('#me').innerHTML=(myName?`You: <b>${esc(short(myName))}</b> · <button class="link" style="color:var(--green)" data-act="who">change</button>`:`<button class="link" style="color:var(--green)" data-act="who">Tell us who you are</button>`)+` · <button class="link" style="color:var(--muted)" data-act="org">${isOwner?'Organiser ✓':'Organiser'}</button>`;
+  $('#evName').textContent=CFG?.eventName||'Spain Golf Trip 2026';
+  const raised=FINES.reduce((a,f)=>a+(+f.amt||0),0)+Object.values(LEDGER.donations||{}).reduce((a,v)=>a+(+v||0),0);
+  $('#raised').textContent=gbp(raised);
+  if(dbState==='off'){ $('#app').innerHTML=`<div class="panel"><h2>Can't load the scoreboard</h2><p>Check you have signal, then reload the page.</p></div>`; return; }
+  let top='';
+  if(S.pinOpen) top+=`<section class="panel"><h3>Organiser</h3>${isOwner?`<p class="small">Organiser mode is on for this phone.</p><button class="btn" data-act="lock">Turn off organiser mode</button>`:`<div class="row"><input type="text" inputmode="numeric" id="pin" placeholder="Organiser PIN" autocomplete="off"><button class="btn primary" data-act="unlock">Unlock</button></div>`}</section>`;
+  if(CFG&&((!myName&&!S.skipWho)||S.whoOpen)) top+=`<section class="panel"><h3>Who are you?</h3><p class="small muted">So fines and scorecards show who entered them. Asked once on this phone.</p><div class="chips">${people().map(p=>`<button class="chip" data-act="iam" data-n="${esc(p.name)}" aria-pressed="${p.name===myName}">${esc(short(p.name))}</button>`).join('')}</div>${myName?'':'<button class="link" style="color:var(--muted)" data-act="skipwho">Not now</button>'}</section>`;
+  const y=window.scrollY; $('#app').innerHTML=(top?`<div class="stack" style="margin-bottom:16px">${top}</div>`:'')+VIEWS[S.tab](); window.scrollTo(0,y);
+}
+
+/* ---------- events ---------- */
+document.querySelector('.tabbar').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;S.tab=b.dataset.tab;save('gt-tab',S.tab);render(true);window.scrollTo(0,0);});
+const app=$('#app');
+$('#me').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;if(b.dataset.act==='who'){S.whoOpen=!S.whoOpen;S.skipWho=false;}else S.pinOpen=!S.pinOpen;render(true);window.scrollTo(0,0);});
+app.addEventListener('focusout',()=>setTimeout(()=>{if(pendingRender)render();},0));
+app.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]'); if(!b||b.disabled) return; const a=b.dataset.act;
+  if(a==='open'||a==='opengroup'){if(a==='open'){S.round=+b.dataset.r;S.group=groupIndexOf(S.round,b.dataset.m);}else S.group=+b.dataset.g;
+    S.confirmTake=false;S.hole=firstOpenHole();S.tab='cards';save('gt-tab','cards');save('gt-group',{r:S.round,g:S.group});render(true);window.scrollTo(0,0);}
+  else if(a==='close'){S.group=null;save('gt-group',null);render(true);}
+  else if(a==='asktake'){S.confirmTake=true;render(true);}
+  else if(a==='notake'){S.confirmTake=false;render(true);}
+  else if(a==='take'){S.confirmTake=false;try{await db.doc('scorers/'+groupKey(S.round,S.group)).set({by:myId,name:myName||'',at:Date.now()});toast('You are now keeping score');}catch(err){writeFail(err);}render(true);}
+  else if(a==='release'){try{await db.doc('scorers/'+groupKey(S.round,S.group)).delete();toast('Card released. The next person to enter a score takes it.');}catch(err){writeFail(err);}render(true);}
+  else if(a==='round'){S.round=+b.dataset.r;render(true);}
+  else if(a==='iam'){myName=b.dataset.n;try{localStorage.setItem('gt-me',myName);}catch(e){} S.whoOpen=false;render(true);}
+  else if(a==='skipwho'){S.skipWho=true;render(true);}
+  else if(a==='unlock'){if(($('#pin').value||'').trim()===ORGANISER_PIN){isOwner=true;try{localStorage.setItem('gt-org','1');}catch(e){} S.pinOpen=false;toast('Organiser mode on');}else toast('Wrong PIN');render(true);}
+  else if(a==='lock'){isOwner=false;try{localStorage.removeItem('gt-org');}catch(e){} S.pinOpen=false;if(S.tab==='setup')S.tab='board';render(true);}
+  else if(a==='sub'){S.sub=b.dataset.s;render(true);}
+  else if(a==='indround'){S.indRound=+b.dataset.r;S.confirmAdj=null;render(true);}
+  else if(a==='askadj'){S.confirmAdj=+b.dataset.r;render(true);}
+  else if(a==='noadj'){S.confirmAdj=null;render(true);}
+  else if(a==='applyadj'||a==='undoadj'){
+    const ri=+b.dataset.r; let map=null;
+    if(a==='applyadj'){map={}; standings(ri).rows.forEach(x=>{if(x.adj) map[x.p]=x.adj;});}
+    b.disabled=true;
+    try{await db.doc('config/main').update({adjust:{[ri]:map}}); toast(a==='applyadj'?`Round ${ri+1} adjustments applied`:`Round ${ri+1} adjustments removed`);}
+    catch(err){writeFail(err);} S.confirmAdj=null; render(true);
+  }
+  else if(a==='hole'){S.hole=+b.dataset.h;render(true);}
+  else if(['inc','dec','par','pu'].includes(a)){
+    const r=CFG.rounds[S.round], p=b.dataset.p, grp=groupsOf(S.round)[S.group]||[], mm=grp.find(x=>x.a.includes(p)||x.b.includes(p)); if(!mm) return;
+    if(!canScore(S.round,S.group)){toast('Someone else is keeping this card.');return;}
+    if(myId&&!scorerOf(S.round,S.group)){SCORERS[groupKey(S.round,S.group)]={by:myId};db?.doc('scorers/'+groupKey(S.round,S.group)).set({by:myId,name:myName||'',at:Date.now()}).catch(()=>{});}
+    const id=docIdFor(S.round,mm.id), v=gross(id,p,S.hole), par=parOf(r,S.hole); let n=v;
+    if(a==='par') n=v==null?par:v===0?par:v;
+    if(a==='inc') n=v==null?par+1:v===0?par:Math.min(15,v+1);
+    if(a==='dec') n=v==null?par-1:v===0?par:Math.max(1,v-1);
+    if(a==='pu') n=v===0?null:0;
+    if(n!==v) queueScore(S.round,mm.id,p,S.hole,n);
+  }
+  else if(a==='who'){const n=b.dataset.n; S.sel.has(n)?S.sel.delete(n):S.sel.add(n); render(true);}
+  else if(a==='pickfine'){S.fineId=S.fineId===b.dataset.id?null:b.dataset.id; render(true);}
+  else if(a==='logfine'||a==='logcustom'){
+    let f=FINELIST.find(x=>x.id===S.fineId);
+    if(a==='logcustom'){const l=$('#cLabel').value.trim(), am=+$('#cAmt').value; if(!l||!(am>0)){toast('Add a description and an amount.');return;} f={id:null,label:l,amount:am};}
+    if(!f||!S.sel.size){toast('Pick who and what for.');return;}
+    if(!db){toast('Not connected, so the fine was not saved.');return;}
+    const who=[...S.sel], refs=[]; b.disabled=true;
+    const items=who.map(p=>({id:Math.random().toString(36).slice(2,10)+Date.now().toString(36),p,f:f.id,label:f.label,amt:+f.amount,day:S.day,by:myName||'',at:Date.now()}));
+    const FV=firebase.firestore.FieldValue, ref=fdb.doc('fines/log');
+    ref.set({items:FV.arrayUnion(...items)},{merge:true}).catch(writeFail);
+    toast(`${gbp(f.amount*who.length)} logged against ${who.length===1?short(who[0]):who.length+' people'}`,()=>{ref.set({items:FV.arrayRemove(...items)},{merge:true}).catch(writeFail);});
+    S.sel.clear();S.fineId=null;S.q='';render(true);
+  }
+  else if(a==='askdel'){S.confirmDel=b.dataset.id;render(true);}
+  else if(a==='nodel'){S.confirmDel=null;render(true);}
+  else if(a==='del'){const it=FINES.find(x=>x.id===b.dataset.id); if(it){fdb.doc('fines/log').set({items:firebase.firestore.FieldValue.arrayRemove(Object.assign({},it))},{merge:true}).catch(writeFail); toast('Fine removed');} S.confirmDel=null;render(true);}
+  else if(a==='delperson'){const gone=draft.people.splice(+b.dataset.i,1)[0]?.name; draft.rounds.forEach(r=>r.matches.forEach(mm=>{mm.a=mm.a.map(n=>n===gone?'':n);mm.b=mm.b.map(n=>n===gone?'':n);})); draftDirty=true; render(true);}
+  else if(a==='addperson'){draft.people.push({name:'New person',side:'',hcp:null});draftDirty=true;render(true);}
+  else if(a==='savecfg'){
+    const bad=draft.rounds.filter(r=>{const s=(r.si||[]).map(Number).filter(v=>v>=1&&v<=18);return s.length&&(s.length!==18||new Set(s).size!==18);}).map(r=>r.course);
+    draft.people.forEach(p=>{p.name=String(p.name||'').trim();});
+    draft.adjust=CFG?.adjust||{};
+    try{b.disabled=true;await db.doc('config/main').set(draft);draftDirty=false;toast(bad.length?`Saved. Check the stroke index for ${bad.join(', ')}: it needs 1–18 once each.`:'Setup saved and live');}
+    catch(err){writeFail(err);} render(true);
+  }
+  else if(a==='addfine'){fdraft.push({id:'f'+Date.now(),label:'New fine',amount:10,cat:'golf'});fdirty=true;render(true);}
+  else if(a==='delfine'){fdraft.splice(+b.dataset.i,1);fdirty=true;render(true);}
+  else if(a==='savefines'){try{await db.doc('config/fines').set({items:fdraft});fdirty=false;toast('Fines list saved');}catch(err){writeFail(err);}render(true);}
+});
+app.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.id==='fineSearch'){S.q=t.value;$('#fineList').innerHTML=fineListHTML();return;}
+  if(t.dataset.path&&t.tagName==='INPUT'){setPath(draft,t.dataset.path,t.dataset.num?(t.value===''?null:+t.value):t.value);if(!draftDirty){draftDirty=true;document.querySelectorAll('[data-act="savecfg"]').forEach(x=>{x.disabled=false;x.textContent='Save setup';});}}
+  if(t.dataset.fpath&&t.tagName==='INPUT'){setPath(fdraft,t.dataset.fpath,t.dataset.num?+t.value:t.value);if(!fdirty){fdirty=true;const s=document.querySelector('[data-act="savefines"]');s.disabled=false;s.textContent='Save fines list';}}
+});
+app.addEventListener('change',async e=>{
+  const t=e.target;
+  if(t.id==='fineDay'){S.day=+t.value;save('gt-day',String(S.day));return;}
+  if(t.dataset.path&&t.tagName==='SELECT'){
+    setPath(draft,t.dataset.path,t.value); draftDirty=true;
+    const m=t.dataset.path.match(/^rounds\.(\d+)\.format$/);
+    if(m){const r=draft.rounds[+m[1]]; r.matches=blankMatches(t.value); r.allowance=t.value==='singles'?100:90;}
+    if(/^people\.\d+\.side$/.test(t.dataset.path)){const valid=s=>draft.people.some(p=>p.name===s&&(p.side==='A'||p.side==='B'));draft.rounds.forEach(r=>r.matches.forEach(mm=>{mm.a=mm.a.map(n=>valid(n)?n:'');mm.b=mm.b.map(n=>valid(n)?n:'');}));}
+    t.blur(); render(true);
+  }
+  if(t.dataset.fpath&&t.tagName==='SELECT'){setPath(fdraft,t.dataset.fpath,t.value);fdirty=true;render(true);}
+  if(t.dataset.ledger){
+    const v=t.value===''?0:+t.value; if(!(v>=0)){toast('Enter a number.');return;}
+    try{await upsert('ledger/main',{[t.dataset.ledger]:{[t.dataset.n]:v}},{donations:{},paid:{}});}catch(err){writeFail(err);}
+  }
+});
+function firstOpenHole(){
+  if(!CFG?.rounds?.[S.round]) return 0; const grp=groupsOf(S.round)[S.group]; if(!grp) return 0;
+  const sts=grp.map(m=>matchState(S.round,m)); if(sts.some(x=>!x.ready)) return 0;
+  for(let i=0;i<18;i++) if(sts.some(x=>!x.holes[i].complete)) return i; return 17;
+}
+
+/* ---------- names of loggers ---------- */
+async function resolveNames(){ return;
+  if(!user) return; const ids=[...new Set([...FINES.map(f=>f.by),...Object.values(SCORERS).map(x=>x?.by)].filter(id=>id&&!asked.has(id)))]; if(!ids.length) return;
+  ids.forEach(i=>asked.add(i));
+  try{const ps=await user.profiles(ids); let ch=false; ids.forEach(i=>{const n=ps?.[i]?.name; if(n){NAMES[i]=n;ch=true;}}); if(ch) render();}catch(e){}
+}
+
+/* ---------- boot ---------- */
+try{myId=localStorage.getItem('gt-id'); if(!myId){myId='d'+Math.random().toString(36).slice(2,12); localStorage.setItem('gt-id',myId);} isOwner=localStorage.getItem('gt-org')==='1';}catch(e){myId='d'+Math.random().toString(36).slice(2,12);}
+render(true);
+window.addEventListener('online',()=>render());window.addEventListener('offline',()=>render());
+(async()=>{
+  try{
+    if(!FIREBASE_CONFIG||!FIREBASE_CONFIG.projectId) throw new Error('no config');
+    firebase.initializeApp(FIREBASE_CONFIG); fdb=firebase.firestore();
+    try{await fdb.enablePersistence({synchronizeTabs:true});}catch(e){}
+  }catch(e){dbState='off';render(true);return;}
+  const wrapSnap=s=>({id:s.id,exists:s.exists,data:()=>s.data(),metadata:s.metadata});
+  const wrapDoc=r=>({id:r.id,path:r.path,get:()=>r.get().then(wrapSnap),set:d=>r.set(d),update:d=>r.set(d,{merge:true}),delete:()=>r.delete(),
+    onSnapshot:(n,e)=>r.onSnapshot(s=>n(wrapSnap(s)),e)});
+  const wrapQ=q=>({orderBy:(f,d)=>wrapQ(q.orderBy(f,d)),doc:id=>wrapDoc(q.doc(id)),add:d=>q.add(d).then(wrapDoc),
+    onSnapshot:(n,e)=>q.onSnapshot(s=>n({docs:s.docs.map(wrapSnap),size:s.size,empty:s.empty,metadata:s.metadata}),e)});
+  db={doc:p=>wrapDoc(fdb.doc(p)),collection:p=>wrapQ(fdb.collection(p))};
+  dbState='live'; render(true);
+  const err=e=>{console.warn(e);};
+  let seeded=false;
+  db.doc('config/main').onSnapshot(s=>{
+    if(!s.exists&&!seeded&&!s.metadata.fromCache){seeded=true; fdb.doc('config/main').set(SEED_CONFIG); fdb.doc('config/fines').set(SEED_FINES); return;}
+    CFG=s.exists?s.data():null; if(S.tab==='setup'&&draftDirty) return; render();},err);
+  db.doc('config/fines').onSnapshot(s=>{FINELIST=(s.exists&&s.data().items)||[]; if(S.tab==='setup'&&fdirty) return; render();},err);
+  db.collection('scores').onSnapshot(q=>{const o={}; q.docs.forEach(d=>o[d.id]=d.data()); SCORES=o; if(S.tab!=='setup') render();},err);
+  db.collection('scorers').onSnapshot(q=>{const o={}; q.docs.forEach(d=>o[d.id]=d.data()); SCORERS=o; if(S.tab==='cards') render();},err);
+  db.doc('fines/log').onSnapshot(s=>{FINES=((s.exists&&s.data().items)||[]).slice().sort((x,y)=>y.at-x.at); if(S.tab!=='setup') render();},err);
+  db.doc('ledger/main').onSnapshot(s=>{LEDGER=s.exists?s.data():{donations:{},paid:{}}; if(S.tab!=='setup') render();},err);
+})();
+})();
+</script>
+</body></html>
